@@ -3,10 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { firebaseConfig } from './firebase';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 root.render(
   <React.StrictMode>
     <App />
