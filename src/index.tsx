@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { firebaseConfig } from './firebase';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import {firebaseConfig} from './firebase';
+import {initializeApp} from 'firebase/app';
+import {getAuth} from 'firebase/auth';
+import {getAnalytics} from 'firebase/analytics';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,14 +17,14 @@ const root = ReactDOM.createRoot(
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const auth = getAuth(app);
+
+const FirebaseContext = createContext(app);
 
 root.render(
   <React.StrictMode>
-    <App />
+    <FirebaseContext.Provider value={app}>
+      <App />
+    </FirebaseContext.Provider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
