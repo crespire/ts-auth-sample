@@ -10,10 +10,10 @@ function App() {
           <Button variant="outlined" color="secondary" href="/userpage">
             Home
           </Button>
-          <Button variant="text" color="secondary">
+          <Button variant="text" color="secondary" href="/">
             Sign In
           </Button>
-          <Button variant="text" color="secondary">
+          <Button variant="text" color="secondary" href="/signout">
             Sign Out
           </Button>
           <Button variant="text" color="secondary" href="/signup">

@@ -4,7 +4,7 @@ const useForm = callback => {
   const [values, setValues] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const target = e.target;
     const property = target.name;
