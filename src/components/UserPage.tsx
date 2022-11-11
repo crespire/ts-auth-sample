@@ -1,22 +1,24 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Typography} from '@mui/material';
-import {AuthContext} from '..';
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import {useNavigate} from 'react-router-dom';
 
-// This is the auth'd page.
 function UserPage() {
-  const auth = useContext(AuthContext);
+  const [user, setUser] = useState<firebase.User | null>(null);
+  const auth = getAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (auth === null) {
-      console.log(auth);
-      console.log('No Auth found.');
-      navigate('/');
-    }
+    onAuthStateChanged(auth, firebaseuser => {
+      if (firebaseuser) {
+        setUser(firebaseuser);
+      } else {
+        console.log('No Auth found.');
+        navigate('/');
+      }
+    });
   }, []);
-  console.log('User page');
 
-  return <Typography>User Info. Email: {auth?.email}</Typography>;
+  return <Typography>User Info. Email: {user?.email}</Typography>;
 }
 export default UserPage;

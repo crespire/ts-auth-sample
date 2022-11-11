@@ -2,7 +2,7 @@ import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import {firebaseConfig} from './firebase';
-import firebase, {initializeApp} from 'firebase/app';
+import {initializeApp} from 'firebase/app';
 import {getAuth} from 'firebase/auth';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -22,7 +22,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 export const FirebaseContext = createContext(app);
-export const AuthContext = React.createContext<firebase.User | null>(null);
 const router = createBrowserRouter([
   {
     path: '/',
@@ -48,9 +47,7 @@ root.render(
   <React.StrictMode>
     <RouterProvider router={router}>
       <FirebaseContext.Provider value={app}>
-        <AuthContext.Provider value={auth}>
-          <App />
-        </AuthContext.Provider>
+        <App />
       </FirebaseContext.Provider>
     </RouterProvider>
   </React.StrictMode>
