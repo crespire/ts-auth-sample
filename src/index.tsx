@@ -1,7 +1,7 @@
 import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import {firebaseConfig} from './firebase';
+// import {firebaseConfig} from './firebase';
 import {initializeApp} from 'firebase/app';
 import {getAuth} from 'firebase/auth';
 import '@fontsource/roboto/300.css';
@@ -16,6 +16,16 @@ import SignUp from './components/SignUp';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const firebaseConfig = {
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+  measurementId: process.env.measurementId,
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
