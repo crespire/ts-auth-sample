@@ -27,7 +27,6 @@ function UserPage() {
             console.error(`${error}`);
           });
       } else {
-        console.log('No Auth found.');
         navigate('/');
       }
     });

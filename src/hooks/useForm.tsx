@@ -2,14 +2,13 @@ import {useState} from 'react';
 
 const useForm = (
   callback = function () {
-    console.log('Callback fired!');
+    console.log('No callback found, but we fired it.');
   }
 ) => {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Handling change!');
     e.preventDefault();
     const target = e.target;
     const property = target.name;
