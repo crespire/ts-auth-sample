@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 // import {firebaseConfig} from './firebase';
 import {initializeApp} from 'firebase/app';
-import {getAuth} from 'firebase/auth';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -29,7 +28,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 export const FirebaseContext = createContext(app);
 const router = createBrowserRouter([

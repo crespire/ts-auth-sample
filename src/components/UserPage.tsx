@@ -29,6 +29,10 @@ function UserPage() {
     });
   }, []);
 
+  if (!image) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <Typography>User Info. Email: {user?.email}</Typography>
