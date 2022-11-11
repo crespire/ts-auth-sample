@@ -4,6 +4,10 @@
     "rootDir": ".",
     "outDir": "build"
   },
+  "lib": [
+    "es2017",
+    "dom"
+  ],
   "include": [
     "src/**/*.ts",
     "test/**/*.ts"
