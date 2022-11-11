@@ -19,9 +19,13 @@ function UserPage() {
           storage,
           `gs://authflow-89fd5.appspot.com/${firebaseuser.uid}`
         );
-        getDownloadURL(gsRef).then(prom => {
-          setImage(prom);
-        });
+        getDownloadURL(gsRef)
+          .then(prom => {
+            setImage(prom);
+          })
+          .catch(error => {
+            console.error(`${error}`);
+          });
       } else {
         console.log('No Auth found.');
         navigate('/');
@@ -29,18 +33,16 @@ function UserPage() {
     });
   }, []);
 
-  if (!image) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <>
       <Typography>User Info. Email: {user?.email}</Typography>
-      <img
-        style={{'max-width': 300}}
-        alt={`${user?.email}'s avatar`}
-        src={image}
-      />
+      {image && (
+        <img
+          style={{maxWidth: 300}}
+          alt={`${user?.email}'s avatar`}
+          src={image}
+        />
+      )}
     </>
   );
 }
