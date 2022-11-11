@@ -14,7 +14,7 @@ function SignUp() {
   const auth = getAuth(app);
   const storage = getStorage(app);
   const {values, errors, handleChange, handleSubmit} = useForm(makeUser);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<ArrayBuffer | null>(null);
   const fileRef = useRef();
   const handleFileSelect = event => {
     setFile(event?.target?.files?.[0]);
