@@ -11,6 +11,7 @@ import UserPage from './components/UserPage';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import App from './App';
+import {AuthProvider} from './provider/AuthProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,8 +42,10 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
