@@ -1,17 +1,14 @@
 import {Box, TextField, Button, Typography} from '@mui/material';
-import React, {useContext, useState, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import useForm from '../hooks/useForm';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import {AuthContext} from '../App';
-import {FirebaseContext} from '..';
+import {app} from '../index';
+import {useAuth} from '../provider/AuthProvider';
 import {useNavigate} from 'react-router-dom';
 import {getStorage, ref, uploadBytes} from 'firebase/storage';
 
 function SignUp() {
-  let user = useContext(AuthContext);
-  const app = useContext(FirebaseContext);
+  const {signUp} = useAuth();
   const navigate = useNavigate();
-  const auth = getAuth(app);
   const storage = getStorage(app);
   const {values, errors, handleChange, handleSubmit} = useForm(makeUser);
   const [file, setFile] = useState<ArrayBuffer | null>(null);
@@ -21,11 +18,14 @@ function SignUp() {
   };
 
   function makeUser() {
-    createUserWithEmailAndPassword(auth, values['email'], values['pass'])
+    signUp(values['email'], values['pass'])
       .then(userCredential => {
-        user = userCredential.user;
+        const user = userCredential.user;
         const storageRef = ref(storage, user.uid);
-        uploadBytes(storageRef, file);
+
+        if (file) {
+          uploadBytes(storageRef, file);
+        }
 
         navigate('/userpage');
       })

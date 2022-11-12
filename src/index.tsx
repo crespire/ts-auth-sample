@@ -1,6 +1,5 @@
-import React, {createContext} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import {firebaseConfig} from './firebase';
 import {initializeApp} from 'firebase/app';
 import '@fontsource/roboto/300.css';
@@ -11,15 +10,14 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import UserPage from './components/UserPage';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import App from './App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-export const FirebaseContext = createContext(app);
+export const app = initializeApp(firebaseConfig);
 const router = createBrowserRouter([
   {
     path: '/',
@@ -44,9 +42,7 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <RouterProvider router={router}>
-      <FirebaseContext.Provider value={app}>
-        <App />
-      </FirebaseContext.Provider>
+      <App />
     </RouterProvider>
   </React.StrictMode>
 );

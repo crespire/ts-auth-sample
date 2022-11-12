@@ -1,16 +1,16 @@
 import {Typography, Box, Button, TextField} from '@mui/material';
 import React from 'react';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import {useNavigate} from 'react-router-dom';
 import useForm from '../hooks/useForm';
+import {useAuth} from '../provider/AuthProvider';
 
 // This is the auth'd page.
 function SignIn() {
-  const auth = getAuth();
+  const {signIn} = useAuth();
   const navigate = useNavigate();
   const {values, errors, handleChange, handleSubmit} = useForm(doLogin);
   function doLogin() {
-    signInWithEmailAndPassword(auth, values['email'], values['pass'])
+    signIn(values['email'], values['pass'])
       .then(() => {
         navigate('/userpage');
       })
