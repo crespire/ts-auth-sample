@@ -50,7 +50,7 @@ const useForm = (
           ? errorRemover(property)
           : errorSetter(
               property,
-              'Password must contain 1 digit and be at least 8 characters long.'
+              'Must contain at least 1 digit and be at least 8 characters long.'
             );
         break;
 

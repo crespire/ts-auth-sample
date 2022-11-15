@@ -1,61 +1,54 @@
+import React from 'react';
 import {Container, AppBar, ButtonGroup, Button} from '@mui/material';
-import React, {useState, useEffect, useContext} from 'react';
-import {Outlet} from 'react-router-dom';
-import {FirebaseContext} from '.';
-import {getAuth} from 'firebase/auth';
-import {useNavigate} from 'react-router-dom';
-
-export const AuthContext = React.createContext<firebase.User | null>(null);
+import {NavLink, useNavigate, Outlet} from 'react-router-dom';
+import {useAuth} from './provider/AuthProvider';
 
 function App() {
-  const app = useContext(FirebaseContext);
-  const auth = getAuth(app);
   const navigate = useNavigate();
-  const [user, setUser] = useState<firebase.User | null>(null);
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(firebaseUser => {
-      setUser(firebaseUser);
-    });
-
-    return unsubscribe;
-  }, []);
+  const {signOff, user} = useAuth();
 
   return (
-    <AuthContext.Provider value={user}>
-      <Container>
-        <AppBar position="static">
-          <ButtonGroup variant="text">
-            <Button variant="outlined" color="secondary" href="/userpage">
-              Home
+    <Container>
+      <AppBar position="static">
+        <ButtonGroup variant="text">
+          <Button
+            component={NavLink}
+            variant="outlined"
+            color="secondary"
+            to="/userpage"
+          >
+            Home
+          </Button>
+          {user === null && (
+            <Button component={NavLink} variant="text" color="secondary" to="/">
+              Sign In
             </Button>
-            {user === null && (
-              <Button variant="text" color="secondary" href="/">
-                Sign In
-              </Button>
-            )}
-            {user && (
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() => {
-                  {
-                    auth.signOut().then(() => {
-                      navigate('/');
-                    });
-                  }
-                }}
-              >
-                Sign Out
-              </Button>
-            )}
-            <Button variant="text" color="secondary" href="/signup">
-              Sign Up
+          )}
+          {user && (
+            <Button
+              variant="text"
+              color="secondary"
+              onClick={() => {
+                signOff().then(() => {
+                  navigate('/');
+                });
+              }}
+            >
+              Sign Out
             </Button>
-          </ButtonGroup>
-        </AppBar>
-        <Outlet />
-      </Container>
-    </AuthContext.Provider>
+          )}
+          <Button
+            component={NavLink}
+            variant="text"
+            color="secondary"
+            to="/signup"
+          >
+            Sign Up
+          </Button>
+        </ButtonGroup>
+      </AppBar>
+      <Outlet />
+    </Container>
   );
 }
 

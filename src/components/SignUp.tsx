@@ -1,17 +1,14 @@
 import {Box, TextField, Button, Typography} from '@mui/material';
-import React, {useContext, useState, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import useForm from '../hooks/useForm';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import {AuthContext} from '../App';
-import {FirebaseContext} from '..';
+import {app} from '../index';
+import {useAuth} from '../provider/AuthProvider';
 import {useNavigate} from 'react-router-dom';
-import {getStorage, ref, uploadBytes} from 'firebase/storage';
+import {getStorage, ref, uploadBytesResumable} from 'firebase/storage';
 
 function SignUp() {
-  let user = useContext(AuthContext);
-  const app = useContext(FirebaseContext);
+  const {signUp} = useAuth();
   const navigate = useNavigate();
-  const auth = getAuth(app);
   const storage = getStorage(app);
   const {values, errors, handleChange, handleSubmit} = useForm(makeUser);
   const [file, setFile] = useState<ArrayBuffer | null>(null);
@@ -21,13 +18,38 @@ function SignUp() {
   };
 
   function makeUser() {
-    createUserWithEmailAndPassword(auth, values['email'], values['pass'])
+    signUp(values['email'], values['pass'])
       .then(userCredential => {
-        user = userCredential.user;
+        const user = userCredential.user;
         const storageRef = ref(storage, user.uid);
-        uploadBytes(storageRef, file);
 
-        navigate('/userpage');
+        if (file) {
+          const uploadTask = uploadBytesResumable(storageRef, file);
+          uploadTask.on(
+            'state_changed',
+            snapshot => {
+              // Observe state change events such as progress, pause, and resume
+              // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('Upload is ' + progress + '% done');
+              switch (snapshot.state) {
+                case 'paused':
+                  console.log('Upload is paused');
+                  break;
+                case 'running':
+                  console.log('Upload is running');
+                  break;
+              }
+            },
+            error => {
+              console.error(`Error: ${error}`);
+            },
+            () => {
+              navigate('/userpage');
+            }
+          );
+        }
       })
       .catch(error => {
         console.error(`${error.code}, ${error.message}`);
