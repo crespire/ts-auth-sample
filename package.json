@@ -1,5 +1,5 @@
 {
-  "name": "digistaff_auth",
+  "name": "ts-auth-sample",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
